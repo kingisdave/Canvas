@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My canvas</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="" media="screen">
+	
+	<style type="text/css">
+		button{
+			width: 38%;
+			height: 15%;
+			border-radius: 50%;
+			margin: 4px 0px 2px 5px;
+			background: #282A63;
+			color: #fff;
+
+		}
+		#side button:hover{
+			background: #FFCD43;
+			color: black
+		}
+		#royal{
+			color: #282A63;
+			font-size: 23px;
+			text-shadow: 2px 2px 2px green;
+		}
+	</style>
+</head>
+
+<body onload="roller()">
+	<div class="container" style="width: 99%; height: 90vh; background:#ccc; border: 5px solid #000">
+		<div id="royal"><h2>Draw Royal</h2></div>
+		<div id="side" style="width: 14%; height: 76%; background: #eee; position: absolute; left: 5">
+			<button onclick="liner=true; rectangular=false; free=false; fillRectan=false;fillCircular=false; circular=false">LINE</button><br>
+			<button onclick="circular=true; liner=false; free=false; rectangular=false;fillRectan=false; fillCircular=false;">Circle</button>
+			<button onclick="fillCircular=true; circular=false; fillRectan=false; liner=false; free=false; rectangular=false;">Fill Circle</button>
+			<button onclick="rectangular=true; circular=false; liner=false; free=false; fillRectan=true;">Rect</button>
+			<button onclick="fillRectan=true; rectangular=true; fillCircular=false;circular=false; liner=false; free=false;">Fill Rect</button>
+			<button onclick="free=true; fillRectan=false; fillCircular=false; rectangular=false; circular=false; liner=false;">FreeHand</button>
+			<input type="color" id="inp" /><button onclick="inputer=true; free=false; rectangular=false; circular=false; liner=false;inputee()">Click</button>
+			<div id="scroller" style=" background: #1111; width: 100%; height:auto; font-weight: bolder; font-size: 106%; padding: 0 2px 0 2px"></div>
+		</div>
+		<canvas onmousedown="downy()" onmouseup="mover()" id="canvy" width="1127" height="543"  style="position: absolute; left:15%; top: 13px; border: 2px solid blue; background: white"></canvas>
+	<div>
+	<script type="text/javascript">
+		var i = 0, showText = "Welcome to the Royal Corel Draw", speed = 200;
+		paint = canvy.getContext('2d');
+		storer = [];
+		function roller() {
+			if (i < showText.length ) {	
+			}
+			else if (i == showText.length ) {
+				scroller.innerHTML = "";
+				i = 0;
+			}
+				scroller.innerHTML += showText.charAt(i);
+			    i++;
+			    setTimeout(roller, speed);
+		}
+		
+		function downy() {
+			downX = event.x-100;
+			downY = event.y;
+		}
+
+		function mover() {
+			moveX = event.x;
+			moveY = event.y;
+			if (liner == true) {
+				paint.moveTo(moveX,moveY);
+				paint.lineTo(downX,downY);
+				var put = paint.stroke();
+				storer.push(put);
+			}
+			if (rectangular==true) {
+				paint.strokeStyle="lightgreen";
+				paint.strokeRect(moveX-14,moveY-14,downX-moveX,downY-moveY);
+			}
+			if (fillRectan==true) {
+			paint.fillStyle="lightgreen";
+				paint.strokeRect(moveX-14,moveY-14,downX-moveX,downY-moveY);
+			}
+			if(circular==true){
+				paint.strokeStyle="lightgreen";
+				paint.beginPath();
+				mymoveX= moveX-14;
+				myDownX=downX-14;
+				mymoveY=moveY-14;
+				wid=2*Math.PI*((myDownX-mymoveX));
+				paint.arc(moveX-14,moveY-14,100,0,2*Math.PI);
+				paint.stroke();
+			}
+			if (fillCircular==true) {
+				paint.fillStyle="lightgreen";
+				paint.beginPath();
+				mymoveX= moveX-14;
+				myDownX=downX-14;
+				mymoveY=moveY-14;
+				wid=2*Math.PI*((myDownX-mymoveX));
+				paint.arc(moveX-14,moveY-14,100,0,2*Math.PI);
+				paint.fill();
+			}
+			// if (free==true) {
+			// 	paint.restore();
+			// }
+
+		}
+
+		function clearCanvas() {
+			storer.pop();
+			// crayon.clearRect(0, 0, 600, 400)
+		}
+
+
+	
+
+	</script>
+</body>
+</html>
